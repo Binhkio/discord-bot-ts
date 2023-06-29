@@ -1,7 +1,8 @@
 import { ActionRowBuilder, ButtonBuilder, Embed, EmbedBuilder, Interaction, Message, TextChannel } from "discord.js";
-import { VoiceConnectionStatus, entersState, getVoiceConnection, joinVoiceChannel } from "@discordjs/voice";
+import { VoiceConnection, VoiceConnectionStatus, entersState, getVoiceConnection, joinVoiceChannel } from "@discordjs/voice";
 import config from "../config";
-import { client } from "..";
+import { GuildAudio, client } from "..";
+import { handleGreetJoin } from "./time";
 
 export const handleJoinChannelByInteraction = async (interaction: Interaction) => {
     if (!interaction.channel || !interaction.guild) return;
@@ -23,6 +24,7 @@ export const handleJoinChannelByInteraction = async (interaction: Interaction) =
 
     const voiceConnection = await entersState(initialVoiceConnection, VoiceConnectionStatus.Ready, 5e3);
 
+    await handleGreetJoin("cả nhà", voiceConnection, guild.id);
     console.log(`Join voice channel: ${channel.id}`);
 
     return voiceConnection;
@@ -44,4 +46,11 @@ export const handleChangeActionRow = (interaction: Interaction, action?: ActionR
             components: action ? [action] : [],
         })
     }
+}
+
+export const handleDisconnect = (guildId: string, voiceConnection: VoiceConnection) => {
+    const Player = GuildAudio.get(guildId)?.player;
+    if (Player) Player.stop();
+    voiceConnection.destroy();
+    GuildAudio.delete(guildId);
 }

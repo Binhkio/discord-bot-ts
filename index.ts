@@ -6,6 +6,8 @@ import config from "./config";
 import ExecuteByInteraction from "./controller";
 import { PlayerSubscription, VoiceConnection, generateDependencyReport, getVoiceConnection } from "@discordjs/voice";
 import MusicPlayer from "./model/MusicPlayer/MusicPlayer";
+import { handleGreetJoin, handleGreetLeave } from "./service/time";
+import { handleDisconnect } from "./service/channel";
 
 dotenv.config();
 
@@ -43,24 +45,39 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     const voiceConnection = oldState.guild.id ? getVoiceConnection(oldState.guild.id) : null;
     if (!voiceConnection) return;
 
-    const members = oldState.channel?.members;
+    const oldMembers = oldState.channel?.members;
+    const newMembers = newState.channel?.members;
 
-    if (members && members.size === 1 && members.get(config.CLIENT_ID)) {
+    // Bot auto leave after 5 minutes nobody in channel
+    if (oldMembers && oldMembers.size === 1 && oldMembers.get(config.CLIENT_ID)) {
         const destroy = setTimeout(() => {
-            const Player = GuildAudio.get(oldState.guild.id)?.player;
-            if (Player) Player.stop();
-            voiceConnection.destroy();
-            GuildAudio.delete(oldState.guild.id);
+            handleDisconnect(oldState.guild.id, voiceConnection);
         }, 1000*60*5 );
         Destroyer.set(oldState.guild.id, destroy);
     }
 
-    const newMembers = newState.channel?.members;
+    // Bot has been kicked
+    if (oldMembers && oldMembers.get(config.CLIENT_ID) && newMembers && !newMembers.get(config.CLIENT_ID)) {
+        handleDisconnect(oldState.guild.id, voiceConnection);
+    }    
 
+    // Someone comeback when bot auto leave
     if (newMembers && newMembers.size === 2 && newMembers.get(config.CLIENT_ID)) {
         const destroyer = Destroyer.get(newState.guild.id);
         clearTimeout(destroyer);
         Destroyer.delete(newState.guild.id);
+    }
+
+    // Greeting when someong leaves
+    if (oldMembers && oldMembers.get(config.CLIENT_ID) && oldState.channelId !== newState.channelId) {
+        if (oldState.member?.nickname)
+            handleGreetLeave(oldState.member.nickname, voiceConnection, oldState.guild.id);
+    }
+    
+    // Greeting when someong joins
+    if (newMembers && newMembers.get(config.CLIENT_ID) && oldState.channelId !== newState.channelId) {
+        if (newState.member?.nickname)
+            handleGreetJoin(newState.member.nickname, voiceConnection, newState.guild.id);
     }
 });
 
