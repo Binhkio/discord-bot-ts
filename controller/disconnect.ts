@@ -1,7 +1,7 @@
 import { Interaction } from "discord.js";
 import { getVoiceConnection } from "@discordjs/voice";
 
-const stop = async (interaction: Interaction) => {
+const disconnect = async (interaction: Interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const voiceConnection = interaction.guildId ? getVoiceConnection(interaction.guildId) : null;
@@ -15,4 +15,4 @@ const stop = async (interaction: Interaction) => {
     }
 }
 
-export default stop;
+export default disconnect;

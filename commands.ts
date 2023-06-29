@@ -19,24 +19,12 @@ const commands = [
         )
         .toJSON(),
     new SlashCommandBuilder()
-        .setName('search')
-        .setDescription('Search video on Youtube by name')
-        .addStringOption(option => 
-            option.setName('name')
-                .setDescription('Name of Youtube video')
-                .setRequired(true)
-        ),
-    new SlashCommandBuilder()
         .setName('play')
         .setDescription('Play single music or playlist by Youtube URL')
         .addStringOption(option => 
             option.setName('url')
                 .setDescription('URL of Youtube video or playlist')
                 .setRequired(true)
-        )
-        .addBooleanOption(option => 
-            option.setName('mixed')
-                .setDescription('Use with mixed list: "TRUE" if you want to import all list')
         )
         .toJSON(),
     new SlashCommandBuilder()

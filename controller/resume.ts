@@ -1,7 +1,8 @@
 import { Interaction } from "discord.js";
 import { GuildAudio } from "..";
 import MusicPlayer from "../model/MusicPlayer/MusicPlayer";
-import { handleJoinChannelByInteraction } from "../service/channel";
+import { handleChangeActionRow, handleJoinChannelByInteraction } from "../service/channel";
+import { PlayingActionRow } from "../model/Embed/MusicEmbed/PlayButton";
 
 const resume = async (interaction: Interaction) => {
     if (!interaction.isChatInputCommand()) return;
@@ -15,6 +16,7 @@ const resume = async (interaction: Interaction) => {
     if (!Player) await interaction.editReply(`No availble player`);
     else {
         await Player.resume();
+        await handleChangeActionRow(interaction, PlayingActionRow);
 
         if (interaction.isRepliable()) {
             await interaction.editReply(`Resume`);

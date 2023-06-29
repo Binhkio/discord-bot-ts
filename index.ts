@@ -19,7 +19,7 @@ console.log(generateDependencyReport());
 
 keepAlive();
 
-registerCommand();
+// registerCommand();
 
 //Invite link:  https://discord.com/api/oauth2/authorize?client_id=1123539025224015873&permissions=40132211370560&scope=bot
 
@@ -32,6 +32,7 @@ export const client = new Client({
 });
 
 export const GuildAudio = new Map<string|null, MusicPlayer>();
+const Destroyer = new Map<string, NodeJS.Timeout>();
 
 client.on('ready', () => {
     console.log(`Log in as ${client.user?.tag}`);
@@ -44,7 +45,19 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     const members = oldState.channel?.members;
 
     if (members && members.size === 1 && members.get(config.CLIENT_ID)) {
-        voiceConnection.destroy();
+        const destroy = setTimeout(() => {
+            voiceConnection.destroy();
+            GuildAudio.delete(oldState.guild.id);
+        }, 1000*60*5 );
+        Destroyer.set(oldState.guild.id, destroy);
+    }
+
+    const newMembers = newState.channel?.members;
+
+    if (newMembers && newMembers.size === 2 && newMembers.get(config.CLIENT_ID)) {
+        const destroyer = Destroyer.get(newState.guild.id);
+        clearTimeout(destroyer);
+        Destroyer.delete(newState.guild.id);
     }
 });
 

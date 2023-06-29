@@ -55,7 +55,7 @@ class MusicPlayer {
                 embeds:[endEmbed]
             })
         }
-        if (this.queue.length === 0) return;
+        if (this.queue.length === 0) return this.player.stop();
         const curVideo = this.queue[0];
         const playable = await ytb.handlePlay(curVideo.url, this.player);
         if (playable) {
@@ -72,8 +72,9 @@ class MusicPlayer {
         return;
     }
 
-    async handleAddQueue(url: string, user_id: string, mixed?: boolean) {
-        if (ytb.playdl.yt_validate(url) === "video" || !mixed) {
+    async handleAddQueue(url: string, user_id: string) {
+        if (ytb.playdl.yt_validate(url) === "video" || url.includes("watch")) {
+            if (url.includes("&")) url = url.split("&")[0];
             this.queue.push({ url, user_id });
             const embed = await AddEmbed("video", url, user_id);
             if (embed) await handleSendEmbed(this.channel_id, embed);
@@ -102,8 +103,8 @@ class MusicPlayer {
         return this.player.unpause();
     }
 
-    skip() {
-        this.playNext();
+    async skip() {
+        await this.playNext();
     }
 
     async stop() {

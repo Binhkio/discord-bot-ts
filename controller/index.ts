@@ -8,6 +8,7 @@ import skip from "./skip";
 import stop from "./stop";
 import { ButtonControll } from "../model/Embed/MusicEmbed/PlayButton";
 import { MenuControll } from "../model/Embed/MusicEmbed/SearchMenu";
+import disconnect from "./disconnect";
 
 const ExecuteByInteraction = async (interaction: Interaction) => {
     if (interaction.isButton()) {
@@ -49,7 +50,7 @@ const ExecuteByInteraction = async (interaction: Interaction) => {
             break;
         case "disconnect":
         case "leave":
-            await skip(interaction);
+            await disconnect(interaction);
             break;
         default:
             break;

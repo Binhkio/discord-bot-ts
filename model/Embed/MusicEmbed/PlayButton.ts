@@ -48,8 +48,8 @@ export const ButtonControll = async (interaction: Interaction) => {
                     await handleChangeActionRow(interaction, PausingActionRow);
                     break;
                 case "skip":
-                    Player.skip();
                     await handleChangeActionRow(interaction);
+                    await Player.skip();
                     break;
                 case "stop":
                     await handleChangeActionRow(interaction);

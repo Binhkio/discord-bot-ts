@@ -9,7 +9,6 @@ import { SearchMenu } from "../model/Embed/MusicEmbed/SearchMenu";
 const play = async (interaction: Interaction) => {
     if (!interaction.isChatInputCommand()) return;
     const url = interaction.options.getString("url");
-    const mixed = interaction.options.getBoolean("mixed");
     if (!url) return;
 
     const voiceConnection = await handleJoinChannelByInteraction(interaction);
@@ -35,7 +34,7 @@ const play = async (interaction: Interaction) => {
     if (!Player) await interaction.editReply(`No availble player`);
     else {
         Player.channel_id = interaction.channelId;
-        await Player.handleAddQueue(url, interaction.user.id, mixed||false);
+        await Player.handleAddQueue(url, interaction.user.id);
         voiceConnection.subscribe(Player.player);
         await interaction.deleteReply();
     }
