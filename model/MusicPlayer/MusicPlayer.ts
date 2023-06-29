@@ -52,7 +52,8 @@ class MusicPlayer {
         if (this.message && this.message.editable) {
             const endEmbed = await EndEmbed(this.previousQueue[0].url, this.previousQueue[0].user_id);
             await this.message.edit({
-                embeds:[endEmbed]
+                embeds: [endEmbed],
+                components: [],
             })
         }
         if (this.queue.length === 0) return this.player.stop();

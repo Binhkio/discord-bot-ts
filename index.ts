@@ -46,6 +46,8 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
     if (members && members.size === 1 && members.get(config.CLIENT_ID)) {
         const destroy = setTimeout(() => {
+            const Player = GuildAudio.get(oldState.guild.id)?.player;
+            if (Player) Player.stop();
             voiceConnection.destroy();
             GuildAudio.delete(oldState.guild.id);
         }, 1000*60*5 );
