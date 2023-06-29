@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { registerCommand } from "./register_command";
 import config from "./config";
 import ExecuteByInteraction from "./controller";
-import { generateDependencyReport, getVoiceConnection } from "@discordjs/voice";
+import { PlayerSubscription, VoiceConnection, generateDependencyReport, getVoiceConnection } from "@discordjs/voice";
 import MusicPlayer from "./model/MusicPlayer/MusicPlayer";
 
 dotenv.config();
@@ -32,6 +32,7 @@ export const client = new Client({
 });
 
 export const GuildAudio = new Map<string|null, MusicPlayer>();
+export const VoiceSubcription = new Map<VoiceConnection, PlayerSubscription>();
 const Destroyer = new Map<string, NodeJS.Timeout>();
 
 client.on('ready', () => {

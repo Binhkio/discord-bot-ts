@@ -1,5 +1,5 @@
 import { Interaction } from "discord.js";
-import { GuildAudio } from "..";
+import { GuildAudio, VoiceSubcription } from "..";
 import MusicPlayer from "../model/MusicPlayer/MusicPlayer";
 import { handleJoinChannelByInteraction } from "../service/channel";
 import { searchEmbed } from "../model/Embed/MusicEmbed/SearchEmbed";
@@ -35,7 +35,8 @@ const play = async (interaction: Interaction) => {
     else {
         Player.channel_id = interaction.channelId;
         await Player.handleAddQueue(url, interaction.user.id);
-        voiceConnection.subscribe(Player.player);
+        const subcription = voiceConnection.subscribe(Player.player);
+        if (subcription) VoiceSubcription.set(voiceConnection, subcription);
         await interaction.deleteReply();
     }
 }

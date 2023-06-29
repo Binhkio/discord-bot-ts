@@ -9,6 +9,7 @@ import stop from "./stop";
 import { ButtonControll } from "../model/Embed/MusicEmbed/PlayButton";
 import { MenuControll } from "../model/Embed/MusicEmbed/SearchMenu";
 import disconnect from "./disconnect";
+import say from "./say";
 
 const ExecuteByInteraction = async (interaction: Interaction) => {
     if (interaction.isButton()) {
@@ -28,6 +29,9 @@ const ExecuteByInteraction = async (interaction: Interaction) => {
     switch (cmdName) {
         case "ping":
             await ping(interaction);
+            break;
+        case "say":
+            await say(interaction);
             break;
         case "join":
             await join(interaction);

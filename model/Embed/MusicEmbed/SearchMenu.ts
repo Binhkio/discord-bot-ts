@@ -1,7 +1,7 @@
 import { ActionRowBuilder, Interaction, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from "discord.js"
 import { YouTubeVideo } from "play-dl"
 import { handleJoinChannelByInteraction } from "../../../service/channel";
-import { GuildAudio } from "../../..";
+import { GuildAudio, VoiceSubcription } from "../../..";
 import MusicPlayer from "../../MusicPlayer/MusicPlayer";
 import { choosedEmbed } from "./SearchEmbed";
 
@@ -47,7 +47,8 @@ export const MenuControll = async (interaction: Interaction) => {
                 else {
                     Player.channel_id = interaction.channelId;
                     await Player.handleAddQueue(url, interaction.user.id);
-                    voiceConnection.subscribe(Player.player);
+                    const subcription = voiceConnection.subscribe(Player.player);
+                    if (subcription) VoiceSubcription.set(voiceConnection, subcription);
                 }
             }
             default:
