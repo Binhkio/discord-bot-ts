@@ -1,9 +1,14 @@
 import express from "express";
+import { handleGetLog } from "./service/error_log";
 
 const server = express();
 
 server.all("/", (req, res) => {
-    res.send("Bot is running now!");
+    const logs = handleGetLog();
+    res.json({
+        title: "Bot is still running right now !!!",
+        logs: logs.reverse(),
+    });
 })
 
 export function keepAlive() {

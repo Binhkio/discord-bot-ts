@@ -8,13 +8,14 @@ import { PlayerSubscription, VoiceConnection, generateDependencyReport, getVoice
 import MusicPlayer from "./model/MusicPlayer/MusicPlayer";
 import { handleGreetJoin, handleGreetLeave } from "./service/time";
 import { handleDisconnect } from "./service/channel";
+import { handleLogError } from "./service/error_log";
 
 dotenv.config();
 
 process.on('unhandledRejection', (reason, p) => {
     console.log("Reason", reason, "Promise", p);
 }).on('uncaughtException', err => {
-    console.log("uncaughtException", err);
+    handleLogError(err);
 })
 
 console.log(generateDependencyReport());
@@ -85,7 +86,7 @@ client.on('interactionCreate', async (interaction) => {
     try {
         await ExecuteByInteraction(interaction);
     } catch (error) {
-        console.log(error);        
+        handleLogError(error);
     }
 })
 

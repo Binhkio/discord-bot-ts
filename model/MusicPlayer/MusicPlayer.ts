@@ -88,6 +88,12 @@ class MusicPlayer {
             const embed = await AddEmbed("playlist", url, user_id);
             if (embed) await handleSendEmbed(this.channel_id, embed);
         }
+        else {
+            return {
+                error: true,
+                mes: "Unknown Youtube URL !!!",
+            };
+        }
         if (this.status === "idle") return this.playNext();
         return;
     }

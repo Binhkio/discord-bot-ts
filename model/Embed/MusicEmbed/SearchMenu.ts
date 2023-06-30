@@ -46,7 +46,10 @@ export const MenuControll = async (interaction: Interaction) => {
                 if (!Player) await interaction.editReply(`No availble player`);
                 else {
                     Player.channel_id = interaction.channelId;
-                    await Player.handleAddQueue(url, interaction.user.id);
+                    const res = await Player.handleAddQueue(url, interaction.user.id);
+                    if (typeof(res) === "object" && res?.error) {
+                        return await interaction.editReply(res.mes);
+                    } 
                     const subcription = voiceConnection.subscribe(Player.player);
                     if (subcription) VoiceSubcription.set(voiceConnection, subcription);
                 }
