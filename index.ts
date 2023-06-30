@@ -53,7 +53,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     if (oldMembers && oldMembers.size === 1 && oldMembers.get(config.CLIENT_ID)) {
         const destroy = setTimeout(() => {
             handleDisconnect(oldState.guild.id, voiceConnection);
-        }, 1000*60*5 );
+        }, 1000*60 );
         Destroyer.set(oldState.guild.id, destroy);
     }
 
@@ -86,6 +86,14 @@ client.on('interactionCreate', async (interaction) => {
     try {
         await ExecuteByInteraction(interaction);
     } catch (error) {
+        if (interaction.isRepliable()) {
+            if (interaction.deferred) {
+                await interaction.editReply(`${error}`);
+            }
+            else {
+                await interaction.reply(`${error}`);
+            }
+        }
         handleLogError(error);
     }
 })
