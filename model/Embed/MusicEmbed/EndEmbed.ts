@@ -16,7 +16,7 @@ export const EndEmbed = async (url: string, user_id: string) => {
     const embed = new EmbedBuilder()
         .setAuthor({
             name: "🔥 ĐÃ PHÁT 🔥",
-            iconURL: user.avatarURL({ extension:'png' }) || "",
+            iconURL: user.avatarURL({ extension:'png' }) || undefined,
         })
         .setTitle(title)
         .setURL(video.url)

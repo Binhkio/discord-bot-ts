@@ -20,7 +20,7 @@ export const AddEmbed = async (type: CustomType, url: string, user_id: string) =
             const embed = new EmbedBuilder()
                 .setAuthor({
                     name: "✅ THÊM NHẠC",
-                    iconURL: user.avatarURL({ extension:"png" }) || "",
+                    iconURL: user.avatarURL({ extension:"png" }) || undefined,
                 })
                 .setTitle('🎶🎶 ' + titleV)
                 .setColor('Green')
@@ -42,7 +42,7 @@ export const AddEmbed = async (type: CustomType, url: string, user_id: string) =
             const embed = new EmbedBuilder()
                 .setAuthor({
                     name: "✅ THÊM DANH SÁCH NHẠC",
-                    iconURL: user.avatarURL({ extension:"png" }) || "",
+                    iconURL: user.avatarURL({ extension:"png" }) || undefined,
                 })
                 .setTitle('💽 ' + titleL)
                 .setColor('Green')

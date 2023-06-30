@@ -6,7 +6,7 @@ export const searchEmbed = async (interaction: Interaction, foundData: YouTubeVi
     const embed = new EmbedBuilder()
         .setAuthor({
             name: "SEARCH",
-            iconURL: interaction.user.avatarURL({extension:"png"}) || "",
+            iconURL: interaction.user.avatarURL({extension:"png"}) || undefined,
         })
         .setDescription(`Choose one from these ${foundData.length} result(s).`)
         .setFooter({text: "_Developed by Binhkio_"})
@@ -23,7 +23,7 @@ export const choosedEmbed = async (interaction: Interaction, url: string) => {
     const embed = new EmbedBuilder()
         .setAuthor({
             name: "CHOOSED",
-            iconURL: interaction.user.avatarURL({extension:"png"}) || "",
+            iconURL: interaction.user.avatarURL({extension:"png"}) || undefined,
         })
         .setTitle(title)
         .setURL(video.url)
