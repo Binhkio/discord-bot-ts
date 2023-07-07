@@ -1,7 +1,9 @@
 import express from "express";
-import { handleGetLog } from "./service/error_log";
+import { handleGetLog, handleCreateLogFolder } from "./service/error_log";
 
 const server = express();
+
+handleCreateLogFolder();
 
 server.all("/", (req, res) => {
     const logs = handleGetLog();

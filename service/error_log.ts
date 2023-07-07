@@ -1,6 +1,10 @@
 import fs from "fs";
 import { calcTime } from "./time";
 
+export const handleCreateLogFolder = () => {
+    fs.mkdirSync("log");
+}
+
 const handleDeleteLogs = (num: number) => {
     const filenames = fs.readdirSync("log");
     if (filenames.length > num) {
