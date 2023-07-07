@@ -2,7 +2,9 @@ import fs from "fs";
 import { calcTime } from "./time";
 
 export const handleCreateLogFolder = () => {
-    fs.mkdirSync("log");
+    if (!fs.existsSync("log")){
+        fs.mkdirSync("log");
+    }
 }
 
 const handleDeleteLogs = (num: number) => {
