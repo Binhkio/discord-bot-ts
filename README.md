@@ -1,8 +1,8 @@
 # Frog Bot (Discord)
 ## Introduction
 
-## Some common url
-### Wake up Frog
+## Some common urls
+### (!) Wake up Frog (!)
 [Wake him up](https://frog-bot-ts.glitch.me/) if he falls asleep.
 
 ### Other urls
