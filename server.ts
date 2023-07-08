@@ -13,6 +13,7 @@ app.get("/", (req: Request, res: Response) => {
     const logs = handleGetLog();
     res.json({
         title: "Bot is still running right now !!!",
+        lastPing: lastPing,
         logs: logs.reverse(),
     });
 })
@@ -32,4 +33,4 @@ setInterval(() => {
     const hostUrl = "http://localhost:3000";
     lastPing = new Date(calcTime()).toString().split(" GMT")[0];
     axios.get(`${hostUrl}/ping`);
-}, 1000*5);
+}, 1000*60*3);
