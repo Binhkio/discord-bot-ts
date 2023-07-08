@@ -1,9 +1,14 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { handleGetLog } from "./service/error_log";
+import axios from "axios";
+import { calcTime } from "./service/time";
+const PORT = 3000;
 
-const server = express();
+const app = express();
 
-server.all("/", (req, res) => {
+let lastPing: String = "";
+
+app.get("/", (req: Request, res: Response) => {
     const logs = handleGetLog();
     res.json({
         title: "Bot is still running right now !!!",
@@ -11,8 +16,19 @@ server.all("/", (req, res) => {
     });
 })
 
+app.get("/ping", (req: Request, res: Response) => {
+    console.log("Server is pinged at " + lastPing);
+    res.sendStatus(200);
+})
+
 export function keepAlive() {
-    server.listen(3000, () => {
-        console.log("Server is running !");
+    app.listen(PORT, () => {
+        console.log("App is listening on port: " + PORT);
     })
 }
+
+setInterval(() => {
+    const hostUrl = "http://localhost:3000";
+    lastPing = new Date(calcTime()).toString().split(" GMT")[0];
+    axios.get(`${hostUrl}/ping`);
+}, 1000*5);
