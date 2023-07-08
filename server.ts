@@ -1,12 +1,13 @@
 import express, { Request, Response } from "express";
-import { handleGetLog } from "./service/error_log";
 import axios from "axios";
 import { calcTime } from "./service/time";
-const PORT = 3000;
+import { handleGetLog, handleCreateLogFolder } from "./service/error_log";
 
 const app = express();
-
+const PORT = 3000;
 let lastPing: String = "";
+
+handleCreateLogFolder();
 
 app.get("/", (req: Request, res: Response) => {
     const logs = handleGetLog();
