@@ -3,9 +3,8 @@ import { textToSpeech } from "./tts";
 
 export const calcTime = (offset?: number) => {
     const curOffset = offset || 7;
-    var d = new Date();
-    var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-    return utc + (3600000*curOffset);
+    var now = new Date();
+    return new Date(now.getTime() + curOffset * 60 * 60 * 1000);
 }
 
 export const handleGreetJoin = async (name: string, voiceConnection: VoiceConnection, guildId: string) => {
